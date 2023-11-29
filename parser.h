@@ -13,6 +13,6 @@ void printHelp();
 
 void parseFile(char *inputfile, char *outputfile);
 
-char* checkInstruction(char *instruction);
+char *checkInstruction(char *instruction);
 
 #endif //PROIECTASC_PARSER_H

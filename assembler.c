@@ -60,11 +60,9 @@ enum RiscInstructions {
     SD = 49,
 };
 
-int main(int argc, char *argv[]){
+int main(int argc, char *argv[]) {
 
     parseFile(argv[1], argv[2]);
-
-
 
     return 0;
 }

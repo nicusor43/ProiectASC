@@ -7,8 +7,8 @@
 uint64_t intToBin(long int intreg) {
     uint64_t binar = 0;
 
-    while (intreg != 0){
-        binar += intreg %2;
+    while (intreg != 0) {
+        binar += intreg % 2;
         binar *= 10;
         intreg /= 2;
     }

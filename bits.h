@@ -10,6 +10,6 @@
 #include "stdint.h"
 #include "stdio.h"
 
-void writeBit(int bit, FILE* file);
+void writeBit(int bit, FILE *file);
 
-void flushBits(FILE* file);
+void flushBits(FILE *file);

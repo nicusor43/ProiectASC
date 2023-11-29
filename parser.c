@@ -70,36 +70,36 @@ hashtable huffman_dictionary[] = {
 // Dictionary of huffman codes for each RISC-V
 // instruction, as calculated by Iulia.
 dictionary huffman_dictionary[NUMBER_OF_INSTRUCTIONS] = {
-    { "add","010"},
-    { "sub","011010"},
-    { "and","000100"},
-    { "addi","11"},
-    { "slli","10100"},
-    { "srai","011011"},
-    { "lb","0111"},
-    { "lw","1011"},
-    { "sb","1001"},
-    { "bge","0011"},
-    { "jal","101011"},
-    { "beqz","0010"},
-    { "bnez","101010"},
-    { "fld","01100"},
-    { "fsw","10000"},
-    { "bgt","100011"},
-    { "call","00011"},
-    { "fmv.s.x","100010"},
-    { "fmul.s","0001011"},
-    { "fadd.s","0001010"},
-    { "sd","0000"}
+        {"add",     "010"},
+        {"sub",     "011010"},
+        {"and",     "000100"},
+        {"addi",    "11"},
+        {"slli",    "10100"},
+        {"srai",    "011011"},
+        {"lb",      "0111"},
+        {"lw",      "1011"},
+        {"sb",      "1001"},
+        {"bge",     "0011"},
+        {"jal",     "101011"},
+        {"beqz",    "0010"},
+        {"bnez",    "101010"},
+        {"fld",     "01100"},
+        {"fsw",     "10000"},
+        {"bgt",     "100011"},
+        {"call",    "00011"},
+        {"fmv.s.x", "100010"},
+        {"fmul.s",  "0001011"},
+        {"fadd.s",  "0001010"},
+        {"sd",      "0000"}
 };
 
 
 // Function that parses the file and returns something? TODO
-void parseFile(char *inputfile, char *outputfile){
-    char str[64]; 
+void parseFile(char *inputfile, char *outputfile) {
+    char str[64];
 
-    FILE* input = fopen(inputfile, "r");
-    FILE* output = fopen(outputfile, "wb");
+    FILE *input = fopen(inputfile, "r");
+    FILE *output = fopen(outputfile, "wb");
 
     /*
     while (fgets(s, sizeof(s), fp) != NULL) {
@@ -107,21 +107,21 @@ void parseFile(char *inputfile, char *outputfile){
     }
     */
 
-    while (fscanf(input, "%63s", str) == 1){
+    while (fscanf(input, "%63s", str) == 1) {
         // fputs(checkInstruction(str), output);
 
         // In cazul in care str este o instructiune de RISC-V,
         // chechInstruction va returna un string diferit, deci
         // vrem sa-l scriem
-        if(checkInstruction(str) != str){
-            char * translation = checkInstruction(str);
+        if (checkInstruction(str) != str) {
+            char *translation = checkInstruction(str);
 
             uint64_t bit_instruction = strtol(translation, &translation, 10);
 
             // Test what bit_instruction becomes
             printf("%lu \n", bit_instruction);
 
-            while(bit_instruction != 0){
+            while (bit_instruction != 0) {
                 writeBit(bit_instruction % 10, output);
                 bit_instruction /= 10;
             }
@@ -138,9 +138,9 @@ void parseFile(char *inputfile, char *outputfile){
 
 // Function which returns the huffman code equivalent
 // to a RISC-V instruction, if it is one, as calculated by Iulia
-char* checkInstruction(char *instruction){
-    for(int i = 0; i < NUMBER_OF_INSTRUCTIONS; i++){
-        if(strcmp(huffman_dictionary[i].key, instruction) == 0){
+char *checkInstruction(char *instruction) {
+    for (int i = 0; i < NUMBER_OF_INSTRUCTIONS; i++) {
+        if (strcmp(huffman_dictionary[i].key, instruction) == 0) {
             return huffman_dictionary[i].value;
         }
     }
