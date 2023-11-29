@@ -5,6 +5,10 @@
 #ifndef PROIECTASC_PARSER_H
 #define PROIECTASC_PARSER_H
 
+#include "stdlib.h"
+#include "stdio.h"
+#include "string.h"
+
 void printHelp();
 
 void parseFile(char *inputfile, char *outputfile);

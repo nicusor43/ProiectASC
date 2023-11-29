@@ -3,18 +3,18 @@
 //
 
 #include "parser.h"
-#include <stdio.h>
-#include <string.h>
+#include "helpers.h"
+#include "bits.h"
 
 #define NUMBER_OF_INSTRUCTIONS 21
 
 typedef struct {
     char *key;
     char *value;
-} hashtable;
+} dictionary;
 
-/* HASHTABLE WITH ALL OF THE INSTRUCTIONS THAT *COULD* BE USED
-hashtable tradcuvinte[] = {
+/* DICTIONARY WITH ALL OF THE INSTRUCTIONS THAT *COULD* BE USED
+hashtable dictionarhuffman[] = {
     { "ADD","010"}, 
     { "SUB","011010"}, 
     { "XOR","0"}, 
@@ -67,44 +67,39 @@ hashtable tradcuvinte[] = {
 };
 */
 
-
-// sunt idiot, trebuiau lowercase keyurile
-hashtable tradcuvinte[NUMBER_OF_INSTRUCTIONS] = {
- { "add","010"}, 
-    { "sub","011010"}, 
-    { "and","000100"}, 
-    { "addi","11"}, 
-    { "slli","10100"}, 
-    { "srai","011011"}, 
-    { "lb","0111"}, 
-    { "lw","1011"}, 
-    { "sb","1001"}, 
-    { "bge","0011"}, 
-    { "jal","101011"}, 
-    { "beqz","0010"}, 
-    { "bnez","101010"}, 
-    { "fld","01100"}, 
-    { "fsw","10000"}, 
-    { "bgt","100011"}, 
-    { "call","00011"}, 
-    { "fmv.s.x","100010"}, 
-    { "fmul.s","0001011"}, 
-    { "fadd.s","0001010"}, 
+// Dictionary of huffman codes for each RISC-V
+// instruction, as calculated by Iulia.
+dictionary dictionarhuffman[NUMBER_OF_INSTRUCTIONS] = {
+    { "add","010"},
+    { "sub","011010"},
+    { "and","000100"},
+    { "addi","11"},
+    { "slli","10100"},
+    { "srai","011011"},
+    { "lb","0111"},
+    { "lw","1011"},
+    { "sb","1001"},
+    { "bge","0011"},
+    { "jal","101011"},
+    { "beqz","0010"},
+    { "bnez","101010"},
+    { "fld","01100"},
+    { "fsw","10000"},
+    { "bgt","100011"},
+    { "call","00011"},
+    { "fmv.s.x","100010"},
+    { "fmul.s","0001011"},
+    { "fadd.s","0001010"},
     { "sd","0000"}
 };
 
-void printHelp() {
-    printf("Usage: ./assembler [OPTIONS] [FILE]\n");
-    printf("Options:\n");
-}
 
 // Function that parses the file and returns something? TODO
 void parseFile(char *inputfile, char *outputfile){
-    char s[64]; 
-    int linecount = 0;
+    char str[64]; 
 
     FILE* input = fopen(inputfile, "r");
-    FILE* output = fopen(outputfile, "w");
+    FILE* output = fopen(outputfile, "wb");
 
     /*
     while (fgets(s, sizeof(s), fp) != NULL) {
@@ -112,19 +107,47 @@ void parseFile(char *inputfile, char *outputfile){
     }
     */
 
-    while (fscanf(input, "%63s", s) == 1){
-        fputs(checkInstruction(s), output);
+    while (fscanf(input, "%63s", str) == 1){
+        // fputs(checkInstruction(str), output);
+
+        // In cazul in care str este o instructiune de RISC-V,
+        // chechInstruction va returna un string diferit, deci
+        // vrem sa-l scriem
+        if(checkInstruction(str) != str){
+            char * traducere = checkInstruction(str);
+
+            uint64_t bitinstruction = strtol(traducere, &traducere, 10);
+
+            // Test what bitinstruction becomes
+            // printf("%lu \n", bitinstruction);
+
+            while(bitinstruction != 0){
+                writeBit(bitinstruction % 10, output);
+                bitinstruction /= 10;
+            }
+        }
+
+        // fwrite(checkInstruction(str), sizeof(char), sizeof(checkInstruction(str)), output);
     }
 
     fclose(input);
+
+    flushBits(output);
     fclose(output);
 }
 
+// Function which returns the huffman code equivalent
+// to a RISC-V instruction, if it is one, as calculated by Iulia
 char* checkInstruction(char *instruction){
     for(int i = 0; i < NUMBER_OF_INSTRUCTIONS; i++){
-        if(strcmp(tradcuvinte[i].key, instruction) == 0){
-            return tradcuvinte[i].value;
+        if(strcmp(dictionarhuffman[i].key, instruction) == 0){
+            return dictionarhuffman[i].value;
         }
     }
     return instruction;
+}
+
+void printHelp() {
+    printf("Usage: ./assembler [OPTIONS] [INPUT FILE] [OUTPUT FILE]\n");
+    printf("Options:\n");
 }

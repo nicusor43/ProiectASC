@@ -4,6 +4,7 @@
 
 #include "assembler.h"
 #include "parser.h"
+#include "helpers.h"
 #include <stdio.h>
 
 // Enum of RISC-V instructions
@@ -62,6 +63,8 @@ enum RiscInstructions {
 int main(int argc, char *argv[]){
 
     parseFile(argv[1], argv[2]);
+
+
 
     return 0;
 }
