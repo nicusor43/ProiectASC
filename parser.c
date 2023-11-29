@@ -14,7 +14,7 @@ typedef struct {
 } dictionary;
 
 /* DICTIONARY WITH ALL OF THE INSTRUCTIONS THAT *COULD* BE USED
-hashtable dictionarhuffman[] = {
+hashtable dictionar_huffman[] = {
     { "ADD","010"}, 
     { "SUB","011010"}, 
     { "XOR","0"}, 
@@ -69,7 +69,7 @@ hashtable dictionarhuffman[] = {
 
 // Dictionary of huffman codes for each RISC-V
 // instruction, as calculated by Iulia.
-dictionary dictionarhuffman[NUMBER_OF_INSTRUCTIONS] = {
+dictionary dictionar_huffman[NUMBER_OF_INSTRUCTIONS] = {
     { "add","010"},
     { "sub","011010"},
     { "and","000100"},
@@ -116,14 +116,14 @@ void parseFile(char *inputfile, char *outputfile){
         if(checkInstruction(str) != str){
             char * traducere = checkInstruction(str);
 
-            uint64_t bitinstruction = strtol(traducere, &traducere, 10);
+            uint64_t bit_instruction = strtol(traducere, &traducere, 10);
 
-            // Test what bitinstruction becomes
-            // printf("%lu \n", bitinstruction);
+            // Test what bit_instruction becomes
+            printf("%lu \n", bit_instruction);
 
-            while(bitinstruction != 0){
-                writeBit(bitinstruction % 10, output);
-                bitinstruction /= 10;
+            while(bit_instruction != 0){
+                writeBit(bit_instruction % 10, output);
+                bit_instruction /= 10;
             }
         }
 
@@ -140,8 +140,8 @@ void parseFile(char *inputfile, char *outputfile){
 // to a RISC-V instruction, if it is one, as calculated by Iulia
 char* checkInstruction(char *instruction){
     for(int i = 0; i < NUMBER_OF_INSTRUCTIONS; i++){
-        if(strcmp(dictionarhuffman[i].key, instruction) == 0){
-            return dictionarhuffman[i].value;
+        if(strcmp(dictionar_huffman[i].key, instruction) == 0){
+            return dictionar_huffman[i].value;
         }
     }
     return instruction;
