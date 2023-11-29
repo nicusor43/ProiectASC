@@ -4,6 +4,9 @@
 
 #include "bits.h"
 
+// Code inspired (or maybe a bit more than that) by this
+// StackOverflow thread: https://stackoverflow.com/questions/1856514/writing-files-in-bit-form-to-a-file-in-c
+
 int current_bit = 0;
 uint8_t bit_buffer = 0;
 
