@@ -1,3 +1,2 @@
-addi blabla
-sb altceva
-aaa
+addi 111, 2222
+sb 111

@@ -11,7 +11,7 @@
 
 void printHelp();
 
-void parseFile(char *inputfile, char *outputfile);
+void parseFile(char *input_file, char *output_file);
 
 char *checkInstruction(char *instruction);
 

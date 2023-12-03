@@ -2,6 +2,7 @@
 // Created by nicusor43 on 11/24/23.
 //
 
+#include <string.h>
 #include "parser.h"
 #include "helpers.h"
 #include "bits.h"
@@ -95,39 +96,45 @@ dictionary huffman_dictionary[NUMBER_OF_INSTRUCTIONS] = {
 
 
 // Function that parses the file and returns something? TODO
-void parseFile(char *inputfile, char *outputfile) {
-    char str[64];
+void parseFile(char *input_file, char *output_file) {
+    char line[1024];
+    char *str;
 
-    FILE *input = fopen(inputfile, "r");
-    FILE *output = fopen(outputfile, "wb");
+    FILE *input = fopen(input_file, "r");
+    FILE *output = fopen(output_file, "wb");
 
-    /*
-    while (fgets(s, sizeof(s), fp) != NULL) {
-        printf("Linia %d: %s \n", ++linecount, s);
-    }
-    */
+    while (fgets(line, sizeof(line), input)) {
 
-    while (fscanf(input, "%63s", str) == 1) {
-        // fputs(checkInstruction(str), output);
 
-        // In cazul in care str este o instructiune de RISC-V,
-        // chechInstruction va returna un string diferit, deci
-        // vrem sa-l scriem
-        if (checkInstruction(str) != str) {
-            char *translation = checkInstruction(str);
+        str = strtok(line, " ");
 
-            uint64_t bit_instruction = strtol(translation, &translation, 10);
 
-            // Test what bit_instruction becomes
-            printf("%lu \n", bit_instruction);
+        while (str != NULL) {
 
-            while (bit_instruction != 0) {
-                writeBit(bit_instruction % 10, output);
-                bit_instruction /= 10;
+            // In cazul in care str este o instructiune de RISC-V,
+            // chechInstruction va returna un string diferit, deci
+            // vrem sa-l scriem
+            if (checkInstruction(str) != str) {
+                char *translation = checkInstruction(str);
+
+                long int bit_instruction = strtol(translation, &translation, 10);
+
+                while (bit_instruction != 0) {
+                    writeBit(bit_instruction % 10, output);
+                    bit_instruction /= 10;
+                }
             }
+
+            // O sa presupunem ca str este un numar momentan (TODO)
+            else {
+                long int numar_intreg = strtol(str, &str, 10);
+
+                writeInt(numar_intreg, output);
+            }
+
+            str = strtok(NULL, ", ");
         }
 
-        // fwrite(checkInstruction(str), sizeof(char), sizeof(checkInstruction(str)), output);
     }
 
     fclose(input);

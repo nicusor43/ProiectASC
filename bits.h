@@ -9,7 +9,11 @@
 
 #include "stdint.h"
 #include "stdio.h"
+#include "string.h"
+#include "helpers.h"
 
 void writeBit(int bit, FILE *file);
 
 void flushBits(FILE *file);
+
+void writeInt(int number, FILE *file);

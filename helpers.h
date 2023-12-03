@@ -7,7 +7,10 @@
 
 #include <stdlib.h>
 #include "stdint.h"
+#include "string.h"
 
 uint64_t intToBin(long int numar);
+
+char *strrev(char *str);
 
 #endif //PROIECTASC_HELPERS_H
